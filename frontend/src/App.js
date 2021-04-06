@@ -1,17 +1,16 @@
 import './App.css';
 import React from "react";
-import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import Home from './Home';
-//import Blips from './Blips';
+import {Router, Switch, Route} from "react-router-dom";
+import Admin from './Admin';
+import { createBrowserHistory } from "history";
 
 function App() {
+  const hist = createBrowserHistory();
   return (
-    <Router>
-    <div>
-      <Switch>
-        <Route path="/"> <Home /> </Route>
-      </Switch>
-    </div>
+  <Router history={hist}>
+    <Switch>
+      <Route path="/" component={Admin} />
+    </Switch>
   </Router>
   );
 }
