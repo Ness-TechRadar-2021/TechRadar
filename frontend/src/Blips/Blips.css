@@ -1,0 +1,11 @@
+.blip {
+    margin-top: 10px;
+    margin-left: 20px;
+    position: inline;
+    float: left;
+    
+}
+
+.container {
+    margin-bottom: 40px;
+}
