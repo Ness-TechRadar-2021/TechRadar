@@ -10,6 +10,7 @@ import bgImage from "./style/sidebar-1.jpg";
 import View from "./Blips/View/View";
 import EditF from "./Blips/EditForm/EditForm";
 import Form from "./Blips/form/form";
+import Form2 from "./Blips/form2/form2";
 
 let ps;
 
@@ -84,7 +85,7 @@ export default function Admin({ ...rest }) {
       <div className={classes.mainPanel} ref={mainPanel}>
         <Route path="/blips/edit/:id" exact component={EditF} />
         <Route path="/blips/view/:id" exact component={View} />
-        <Route path="/blips/new" exact component={Form} />
+        <Route path="/blips/new" exact component={Form2} />
 
         {getRoute() ? (
           <div className={classes.content}>
