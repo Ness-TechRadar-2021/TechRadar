@@ -1,21 +1,21 @@
 import { Blip } from '../models/blip.mjs';
 import { Project } from '../models/project.mjs';
 
+export function getBlips(req, res) {
+  Blip.find()
+    .then((blips) => {
+      res.type('application/json');
+      res.send(JSON.stringify(blips));
+    })
+    .catch((err) => console.log(err));
+}
+
 export function getBlip(req, res) {
   // eslint-disable-next-line no-underscore-dangle
   Blip.findById(req.params.id)
     .then((blip) => {
       res.type('application/json');
       res.send(JSON.stringify(blip));
-    })
-    .catch((err) => console.log(err));
-}
-
-export function getBlips(req, res) {
-  Blip.find()
-    .then((blips) => {
-      res.type('application/json');
-      res.send(JSON.stringify(blips));
     })
     .catch((err) => console.log(err));
 }
@@ -62,14 +62,12 @@ export function removeBlip(req, res) {
   Blip.findOneAndRemove({ _id: req.params.id })
     .then(() => {
       Project.updateMany({}, {
-        $pull: { blips: { _id: req.params.id } },
+        $pull: { blips: req.params.id },
       })
         .then(() => {
           res.sendStatus(200);
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch((err) => console.error(err));
     })
     .catch((err) => console.error(err));
 }

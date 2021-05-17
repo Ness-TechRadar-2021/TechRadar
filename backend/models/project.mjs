@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-import { blipSchema } from './blip.mjs';
-
 export const projectSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -15,10 +13,11 @@ export const projectSchema = new mongoose.Schema({
     minlength: 10,
     maxlength: 2500,
   },
-  blips: {
-    type: [blipSchema],
+  blips: [{
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Blip',
     required: false,
-  },
+  }],
 });
 
 export const Project = mongoose.model('Project', projectSchema, 'projects');
