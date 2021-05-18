@@ -56,7 +56,6 @@ export default {
     position: relative;
     top: -1.875em;
     left: 2em;
-    width: 95%;
     h3 {
       font-size: 1.75em;
     }
