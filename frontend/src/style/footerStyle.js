@@ -35,7 +35,7 @@ import {
       ...defaultFont,
       '@media (min-width: "960px")': {
         visibility: "hidden"
-      }
+      },
     },
     container,
     a: {

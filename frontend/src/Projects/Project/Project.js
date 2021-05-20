@@ -102,8 +102,8 @@ export default function Project(props) {
               <EditIcon></EditIcon>
             </NavLink>
           </IconButton>
-          <IconButton aria-label="share">
-            <DeleteIcon onClick={handleOpen} />
+          <IconButton onClick={handleOpen} aria-label="share">
+            <DeleteIcon  />
           </IconButton>
 
           <IconButton aria-label="add to favorites">

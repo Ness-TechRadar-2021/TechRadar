@@ -17,6 +17,7 @@ import EditProject from "./Projects/EditProject/EditProject";
 import Blips from "./Blips/Blips";
 import Projects from "./Projects/Projects";
 import Dashboard from "./Dashboard/Dashboard";
+import Header from './components/Header/Header'
 
 let ps;
 
@@ -55,7 +56,7 @@ export default function Admin({ ...rest }) {
   //     setFixedClasses("dropdown");
   //   }
   // };
- 
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -98,12 +99,13 @@ export default function Admin({ ...rest }) {
         handleDrawerToggle={handleDrawerToggle}
       />
       <div className={classes.mainPanel} ref={mainPanel}>
-            <Route exact path="/blips/edit/:id" exact component={EditF} />
-            <Route path="/blips/view/:id" exact component={View} />
-            <Route path="/blips/new" exact component={Form} />
-            <Route path="/projects/edit/:id" exact component={EditProject} />
-            <Route path="/projects/view/:id" exact component={ViewProject} />
-            <Route path="/projects/new" exact component={NewProject} />
+        <Header />
+        <Route exact path="/blips/edit/:id" exact component={EditF} />
+        <Route path="/blips/view/:id" exact component={View} />
+        <Route path="/blips/new" exact component={Form} />
+        <Route path="/projects/edit/:id" exact component={EditProject} />
+        <Route path="/projects/view/:id" exact component={ViewProject} />
+        <Route path="/projects/new" exact component={NewProject} />
 
         <div className={classes.content}>
           <div className={classes.container}>

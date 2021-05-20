@@ -14,7 +14,7 @@ const Projects = (props) => {
     axios
       .get("/projects")
       .then((response) => {
-        const projects = response.data;
+        // const projects = response.data;
         setProjects(response.data);
       })
       .catch((error) => {
@@ -48,9 +48,9 @@ const Projects = (props) => {
       });
   }
 
-  const postSelectedHandler = (_id) => {
-    props.history.push({ pathname: "/projects/view/" + _id });
-  };
+  // const postSelectedHandler = (_id) => {
+  //   props.history.push({ pathname: "/projects/view/" + _id });
+  // };
 
   const addSelectedHandler = (_id) => {
     props.history.push({ pathname: "/projects/new" });

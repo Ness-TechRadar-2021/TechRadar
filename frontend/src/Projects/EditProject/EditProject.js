@@ -69,7 +69,7 @@ const EditProject = () => {
           .get("/blips/" + Blipid)
           .then((response) => {
             setCurrentBlips((oldBlips) => [...oldBlips, response.data]);
-            console.log(response.data.name);
+            // console.log(response.data.name);
           })
           .catch((error) => {
             console.log(error);
@@ -84,7 +84,7 @@ const EditProject = () => {
         .get("/blips/" + selectedBlip)
         .then((response) => {
           setBlipAdd(response.data);
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

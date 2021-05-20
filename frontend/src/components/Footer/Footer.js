@@ -15,10 +15,15 @@ export default function Footer(props) {
   // var visibilityState = props.vis ? "visible" : "hidden"  ;
   // style={{visibility: visibilityState}}
   return (
-    <footer className={classes.footer} >
+    <footer  className={classes.footer} >
       <div className={classes.container}>
         <div className={classes.left}>
           <List className={classes.list}>
+          <ListItem className={classes.inlineBlock}>
+              <a href="/" className={classes.block}>
+                Dashboard
+              </a>
+            </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a href="/blips" className={classes.block}>
                 Blips

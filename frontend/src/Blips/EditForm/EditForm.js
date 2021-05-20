@@ -6,6 +6,7 @@ import {
   makeStyles,
   MenuItem,
   Select,
+  InputLabel,
   TextField,
 } from "@material-ui/core";
 import { useFormik } from "formik";
@@ -13,7 +14,6 @@ import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import axios from "../../axios/axios";
 import { useParams } from "react-router-dom";
-import FormLabel from "@material-ui/core/FormLabel";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -24,22 +24,20 @@ const useStyles = makeStyles(() => ({
 
 const EditForm = () => {
   const classes = useStyles();
-  // const [state, setState] = React.useState({});
 
   const { id } = useParams();
   const [blip, setBlip] = useState({});
   useEffect(() => {
-    // GET request using axios inside useEffect React hook
     axios.get("/blips/" + id).then((response) => setBlip(response.data));
   }, []);
   console.log(blip.ring);
 
   const formik = useFormik({
     initialValues: {
-      name: blip.name,
-      description: blip.description,
-      quadrant: blip.quadrant,
-      ring: blip.ring,
+      name: blip.name || "",
+      description: blip.description || "",
+      quadrant: blip.quadrant || "",
+      ring: blip.ring || "",
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -83,12 +81,9 @@ const EditForm = () => {
       <Container maxWidth="xs">
         <h1>Edit this blip!</h1>
         <form onSubmit={formik.handleSubmit} className={classes.form}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Name</FormLabel>
-          </FormControl>
           <TextField
             id="name"
-            // label="Name"
+            label="Name"
             className="text-input"
             onChange={formik.handleChange}
             value={formik.values.name}
@@ -100,12 +95,9 @@ const EditForm = () => {
                 : ""
             }
           />
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Description</FormLabel>
-          </FormControl>
           <TextField
             id="description"
-            // label="Description"
+            label="Description"
             className="text-input"
             onChange={formik.handleChange}
             value={formik.values.description}
@@ -126,10 +118,7 @@ const EditForm = () => {
               formik.errors.quadrant && formik.touched.quadrant ? true : false
             }
           >
-            {/* <InputLabel id="quadrant-label">Quadrant</InputLabel> */}
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Quadrant</FormLabel>
-            </FormControl>
+            <InputLabel id="quadrant-label">Quadrant</InputLabel>
             <Select
               labelId="quadrant-label"
               id="quadrant"
@@ -153,10 +142,7 @@ const EditForm = () => {
           <FormControl
             error={formik.errors.ring && formik.touched.ring ? true : false}
           >
-            {/* <InputLabel id="ring-label">Ring</InputLabel> */}
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Ring</FormLabel>
-            </FormControl>
+            <InputLabel id="ring-label">Ring</InputLabel>
             <Select
               labelId="ring-label"
               id="ring"
