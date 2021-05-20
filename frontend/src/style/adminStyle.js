@@ -25,7 +25,11 @@ const appStyle = (theme) => ({
   },
   container,
   map: {
-    marginTop: "70px",
+    marginTop: "50px",
+  },
+  footer: {
+    visibility: "hidden",
+    display: "none",
   },
 });
 

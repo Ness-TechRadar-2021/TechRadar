@@ -3,15 +3,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import { blue, red, green, purple } from "@material-ui/core/colors";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { Button } from "@material-ui/core";
@@ -20,7 +16,7 @@ import Modal from "@material-ui/core/Modal";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 230,
-    // maxHeight: "100%",
+    maxHeight: "100%",
     boxSizing: "content-box",
     justifyContent: "space-between",
     backgroundColor: "ghostwhite",
@@ -36,9 +32,19 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
     textDecoration: "none",
   },
+  truncate: {
+    width: "200px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    padding: 20,
+    fontSize: "1.3rem",
+    margin: 0,
+    lineClamp: 1,
+  },
   paper: {
     position: "absolute",
-    width: "30%",
+    width: 400,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -54,55 +60,17 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-evenly",
   },
-  cardHeaderRoot: {
-    overflow: "hidden",
-  },
-  cardHeaderContent: {
-    overflow: "hidden",
-  },
-  buttonContinue:{
-    color: "green",
-  }
 }));
 
-export default function Blip(props) {
-  const { _id, name, quadrant, ring } = props;
+export default function Project(props) {
+  const { _id, name} = props;
   let styleProps;
-  let baseColorLevel = 100;
-
-  const colors = {
-    "Programming Languages and Frameworks": {
-      Hold: blue[baseColorLevel],
-      Assess: blue[baseColorLevel + 200],
-      Trial: blue[baseColorLevel + 500],
-      Adopt: blue[baseColorLevel + 800],
-    },
-    Tools: {
-      Hold: green[baseColorLevel],
-      Assess: green[baseColorLevel + 200],
-      Trial: green[baseColorLevel + 500],
-      Adopt: green[baseColorLevel + 800],
-    },
-    Platforms: {
-      Hold: red[baseColorLevel],
-      Assess: red[baseColorLevel + 200],
-      Trial: red[baseColorLevel + 500],
-      Adopt: red[baseColorLevel + 800],
-    },
-    Techniques: {
-      Hold: purple[baseColorLevel],
-      Assess: purple[baseColorLevel + 200],
-      Trial: purple[baseColorLevel + 500],
-      Adopt: purple[baseColorLevel + 800],
-    },
-  };
-
-  styleProps = { backgroundColor: colors[quadrant][ring] };
 
   const classes = useStyles(styleProps);
 
   const [open, setOpen] = React.useState(false);
 
+  //this is for the modals
   const handleOpen = () => {
     setOpen(true);
   };
@@ -115,43 +83,20 @@ export default function Blip(props) {
     <>
       <Card className={classes.root} onClick={props.clicked}>
         <CardHeader
-          classes={{
-            root: classes.cardHeaderRoot,
-            content: classes.cardHeaderContent,
-          }}
           avatar={
             <Avatar aria-label="recipe" className={classes.avatar}>
               {name[0]}
             </Avatar>
           }
-          title={
-            <Typography
-              variant="h6"
-              // color="textSecondary"
-              component="h4"
-              noWrap
-            >
-              {name}
-            </Typography>
-          }
-          subheader={ring}
+          title={name}
+          className={classes.truncate}
         />
         <CardMedia className={classes.media} title={name} />
-        <CardContent>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            component="p"
-            noWrap
-          >
-            Quadrant : {quadrant}
-          </Typography>
-        </CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
             <NavLink
-              className={classes.link} exact
-              to={`/blips/edit/${_id}`}
+              className={classes.link}
+              to={`/projects/edit/${_id}`}
               style={{ textDecoration: "none" }}
             >
               <EditIcon></EditIcon>
@@ -164,7 +109,7 @@ export default function Blip(props) {
           <IconButton aria-label="add to favorites">
             <NavLink
               className={classes.link}
-              to={`/blips/view/${_id}`}
+              to={`/projects/view/${_id}`}
               style={{ textDecoration: "none" }}
             >
               <VisibilityIcon />
@@ -188,9 +133,9 @@ export default function Blip(props) {
             </Button>
             <Button
               variant="outlined"
-              className={classes.buttonContinue}
+              color="primary"
               onClick={() => {
-                props.onRemoveBlip(props.blip);
+                props.onRemoveProject(props.project);
                 setOpen(false);
               }}
             >
@@ -203,12 +148,12 @@ export default function Blip(props) {
   );
 }
 
-Blip.propTypes = {
-  name: PropTypes.string,
-  quadrant: PropTypes.string,
-  ring: PropTypes.string,
-  description: PropTypes.string,
-  handleExpandClick: PropTypes.func,
-  expanded: PropTypes.bool,
-  classes: PropTypes.func,
-};
+// Blip.propTypes = {
+//   name: PropTypes.string,
+//   quadrant: PropTypes.string,
+//   ring: PropTypes.string,
+//   description: PropTypes.string,
+//   handleExpandClick: PropTypes.func,
+//   expanded: PropTypes.bool,
+//   classes: PropTypes.func,
+// };

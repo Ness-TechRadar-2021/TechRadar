@@ -1,42 +1,31 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Blip from "./Blip/Blip";
 import "./Blips.css";
-import axios from "../axios";
-import Navbar from "./Navbar/Navbar";
-import Aux from '../auxilliary/Auxilliary';
+import axios from "../axios/axios";
+import Navbar from "../components/Navbar/Navbar";
+import Aux from "../auxilliary/Auxilliary";
+import { Redirect } from "react-router-dom";
 
-class Blips extends Component {
-  constructor() {
-    super();
-    this.state = {
-      blips: [],
-      error: false,
-    };
-    this.removeBlip = this.removeBlip.bind(this);
-  }
+const Blips = (props) => {
 
-  componentDidMount() {
-    console.log(this.props);
+  const [blips, setBlips] = useState([]);
+  const [error, setError] = useState(false);
+  const islogged = true;
+
+  useEffect(() => {
     axios
       .get("/blips")
       .then((response) => {
         const blips = response.data;
-        console.log(blips);
-        const updateBlips = blips.map((blip) => {
-          return {
-            ...blip,
-          };
-        });
-        this.setState({ blips: updateBlips });
-        console.log(this.state.blips);
+        setBlips(response.data);
       })
       .catch((error) => {
         console.log(error);
-        //this.setState({error: true});
+        setError(true);
       });
-  }
+  }, []);
 
-  removeBlip(blipRemoved) {
+  const removeBlip = (blipRemoved) => {
     console.log(blipRemoved.description);
     axios
       .delete("/blips/" + blipRemoved._id)
@@ -51,53 +40,52 @@ class Blips extends Component {
               ...blip,
             };
           });
-          this.setState({ blips: updateBlips });
-          console.log(this.state.blips);
+          setBlips(updateBlips);
         });
       })
       .catch((error) => {
         console.log(error);
-        //this.setState({error: true});
       });
-  }
-
-  postSelectedHandler = (_id) => {
-    this.props.history.push({ pathname: "/blips/view/" + _id });
-    //this.props.history.push('/' + id);
   };
 
-  addSelectedHandler = (_id) => {
-    this.props.history.push({ pathname: "/blips/new" });
-    //this.props.history.push('/' + id);
+  const postSelectedHandler = (_id) => {
+    props.history.push({ pathname: "/blips/view/" + _id });
   };
 
-  render() {
-    let blips = <p style={{ textAlign: "center" }}>Something went wrong</p>;
-    if (!this.state.error) {
-      blips = this.state.blips.map((blip, index) => {
-        return (
-          <div className="blip" key={index}>
-            <Blip
-              onRemoveBlip={this.removeBlip}
-              _id={blip._id}
-              name={blip.name}
-              quadrant={blip.quadrant}
-              ring={blip.ring}
-              description={blip.description}
-              blip={blip}
-              // clicked={() => this.postSelectedHandler(blip._id)}
-            />{" "}
-          </div>
-        );
-      });
-    }
-    return (
-      <Aux className="container">
-        <Navbar clicked={() => this.addSelectedHandler()} />
-        {blips}
-      </Aux>
-    );
+  const addSelectedHandler = (_id) => {
+    props.history.push({ pathname: "/blips/new" });
+  };
+
+  let Blips = <p style={{ textAlign: "center" }}>Something went wrong</p>;
+  if (!error) {
+    Blips = blips.map((blip, index) => {
+      return (
+        <div className="blip" key={index}>
+          <Blip
+            onRemoveBlip={removeBlip}
+            _id={blip._id}
+            name={blip.name}
+            quadrant={blip.quadrant}
+            ring={blip.ring}
+            description={blip.description}
+            blip={blip}
+          />{" "}
+        </div>
+      );
+    });
   }
-}
+  return (
+    <Aux>
+      {islogged ? (
+        <div>
+          <Navbar clicked={() => addSelectedHandler()} title="Add blip" />
+          <div className="container">{Blips}</div>
+        </div>
+      ) : (
+        <Redirect to="/" />
+      )}
+    </Aux>
+  );
+};
 
 export default Blips;
