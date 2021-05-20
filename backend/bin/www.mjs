@@ -1,8 +1,12 @@
+import bcrypt from 'bcryptjs';
 import debug from 'debug';
 import http from 'http';
 import mongoose from 'mongoose';
 
 import app from '../app.mjs';
+
+import Role from '../models/role.mjs';
+import User from '../models/user.mjs';
 
 const DB_USERNAME = 'tradmin';
 const DB_PASSWORD = 'UplED3N01vnsl3KC';
@@ -13,11 +17,53 @@ const port = process.env.PORT || 5000;
 
 const log = debug('backend:server');
 
+const init = () => {
+  mongoose.connection.db.collection('roles').estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      const userRole = new Role({ name: 'user' });
+      const adminRole = new Role({ name: 'admin' });
+
+      userRole.save((error) => {
+        if (err) {
+          console.log('error', error);
+        }
+      });
+
+      adminRole.save((error) => {
+        if (err) {
+          console.log('error', error);
+        }
+      });
+    }
+  });
+
+  mongoose.connection.db.collection('users').estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      Role.find({ name: 'admin' })
+        .then((roles) => {
+          const adminUser = new User({
+            username: 'admin',
+            password: bcrypt.hashSync('12345', 8),
+            roles,
+          });
+
+          adminUser.save((error) => {
+            if (err) {
+              console.log('error', error);
+            }
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+  });
+};
+
 mongoose.connect(
   `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.lonsy.mongodb.net/${DB_DATABASE}?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
 ).then(() => {
   server.listen(port);
+  init();
   log('Connected to database');
 }).catch((err) => {
   log(err);
