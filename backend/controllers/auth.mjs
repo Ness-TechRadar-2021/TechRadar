@@ -41,3 +41,18 @@ export const login = (req, res) => {
       console.log(err);
     });
 };
+
+export const verifyToken = (req, res) => {
+  const { accessToken } = req.params;
+
+  if (!accessToken) {
+    return res.sendStatus(403);
+  }
+
+  return jwt.verify(accessToken, 'larisa-e-un-mango', (err) => {
+    if (err) {
+      return res.sendStatus(401);
+    }
+    return res.sendStatus(200);
+  });
+};
