@@ -1,7 +1,7 @@
 import './App.css';
 import React from "react";
 import {Router, Switch, Route} from "react-router-dom";
-import Admin from './Admin';
+import Layout from './components/Layout/Layout';
 import { createBrowserHistory } from "history";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
   return (
   <Router history={hist}>
     <Switch>
-      <Route path="/" component={Admin} />
+      <Route path="/" component={Layout} />
     </Switch>
   </Router>
   );

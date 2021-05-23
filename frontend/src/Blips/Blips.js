@@ -10,7 +10,15 @@ const Blips = (props) => {
 
   const [blips, setBlips] = useState([]);
   const [error, setError] = useState(false);
-  const islogged = true;
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  let config;
+  if(currentUser) {
+    config = {
+    headers: {
+      'x-access-token': currentUser.accessToken
+    }
+  }
+  } 
 
   useEffect(() => {
     axios
@@ -28,7 +36,7 @@ const Blips = (props) => {
   const removeBlip = (blipRemoved) => {
     console.log(blipRemoved.description);
     axios
-      .delete("/blips/" + blipRemoved._id)
+      .delete("/blips/" + blipRemoved._id, config)
       .then((deleted) => {
         console.log(deleted.data);
         console.log(deleted);
@@ -76,13 +84,13 @@ const Blips = (props) => {
   }
   return (
     <Aux>
-      {islogged ? (
+      {currentUser ? (
         <div>
           <Navbar clicked={() => addSelectedHandler()} title="Add blip" />
           <div className="container">{Blips}</div>
         </div>
       ) : (
-        <Redirect to="/" />
+        <h1>Ups...you don't have access!</h1>
       )}
     </Aux>
   );

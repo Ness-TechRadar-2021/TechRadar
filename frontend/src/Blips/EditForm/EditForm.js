@@ -27,6 +27,16 @@ const EditForm = () => {
 
   const { id } = useParams();
   const [blip, setBlip] = useState({});
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  let config;
+  if(currentUser) {
+    config = {
+    headers: {
+      'x-access-token': currentUser.accessToken
+    }
+  }
+  } 
+  
   useEffect(() => {
     axios.get("/blips/" + id).then((response) => setBlip(response.data));
   }, []);
@@ -67,7 +77,7 @@ const EditForm = () => {
       alert(JSON.stringify(values, null, 2));
       console.log(blip);
       axios
-        .put("/blips/" + id, values)
+        .put("/blips/" + id, values, config)
         .then((response) => {})
         .catch((error) => {
           console.log(error);

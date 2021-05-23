@@ -43,6 +43,16 @@ const EditProject = () => {
   const classes = useStyles();
   const { id } = useParams();
   const [project, setProject] = useState({});
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  let config;
+  if(currentUser) {
+    config = {
+    headers: {
+      'x-access-token': currentUser.accessToken
+    }
+  }
+  } 
+
   useEffect(() => {
     axios.get("/projects/" + id).then((response) => setProject(response.data));
   }, []);
@@ -114,7 +124,7 @@ const EditProject = () => {
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
       axios
-        .put("/projects/" + id, values)
+        .put("/projects/" + id, values, config)
         .then((res) => {
           console.log(res);
         })

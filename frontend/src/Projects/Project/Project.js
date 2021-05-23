@@ -63,12 +63,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Project(props) {
-  const { _id, name} = props;
+  const { _id, name } = props;
   let styleProps;
 
   const classes = useStyles(styleProps);
 
   const [open, setOpen] = React.useState(false);
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   //this is for the modals
   const handleOpen = () => {
@@ -93,18 +94,22 @@ export default function Project(props) {
         />
         <CardMedia className={classes.media} title={name} />
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <NavLink
-              className={classes.link}
-              to={`/projects/edit/${_id}`}
-              style={{ textDecoration: "none" }}
-            >
-              <EditIcon></EditIcon>
-            </NavLink>
-          </IconButton>
-          <IconButton onClick={handleOpen} aria-label="share">
-            <DeleteIcon  />
-          </IconButton>
+          {currentUser ? (
+            <div>
+              <IconButton aria-label="add to favorites">
+                <NavLink
+                  className={classes.link}
+                  to={`/projects/edit/${_id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <EditIcon></EditIcon>
+                </NavLink>
+              </IconButton>
+              <IconButton onClick={handleOpen} aria-label="share">
+                <DeleteIcon />
+              </IconButton>
+            </div>
+          ) : null}
 
           <IconButton aria-label="add to favorites">
             <NavLink

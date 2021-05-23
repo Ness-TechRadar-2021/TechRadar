@@ -23,6 +23,8 @@ export default function Sidebar(props) {
     else if (
       window.location.href.indexOf("blips") === -1 &&
       window.location.href.indexOf("projects") === -1 &&
+      window.location.href.indexOf("profile") === -1 &&
+      window.location.href.indexOf("login") === -1 &&
       routeName === ""
     )
       return true;

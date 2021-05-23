@@ -44,6 +44,16 @@ const NewProject = () => {
   const [selectedBlip, setSelectedBlip] = useState("");
   const [blipAdd, setBlipAdd] = useState({});
   const [currentBlips, setCurrentBlips] = useState([]);
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  let config;
+  if(currentUser) {
+    config = {
+    headers: {
+      'x-access-token': currentUser.accessToken
+    }
+  }
+  } 
+
   useEffect(() => {
     axios
       .get("/blips")
@@ -90,7 +100,7 @@ const NewProject = () => {
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
       axios
-        .post("/projects", values)
+        .post("/projects", values, config)
         .then((res) => {
           console.log(res);
         })
@@ -141,25 +151,6 @@ const NewProject = () => {
       );
     });
   }
-
-  // if (!error) {
-  //   Blips = blips.map((blip, index) => {
-  //     return (
-  //       <FormControlLabel
-  //         control={
-  //           <Checkbox
-  //             name={blip._id}
-  //             value={formik.values.blips}
-  //           //   onChange={formik.handleChange}
-  //           />
-  //         }
-  //         label={blip.name}
-  //         key={index}
-  //         onChange={() => formik.values.blips.push(blip._id)}
-  //       />
-  //     );
-  //   });
-  // }
 
   return (
     <>

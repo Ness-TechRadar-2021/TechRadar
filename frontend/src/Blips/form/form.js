@@ -23,6 +23,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Form2 = () => {
   const classes = useStyles();
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  let config;
+  if(currentUser) {
+    config = {
+    headers: {
+      'x-access-token': currentUser.accessToken
+    }
+  }
+  } 
 
   const formik = useFormik({
     initialValues: {
@@ -57,7 +66,7 @@ const Form2 = () => {
     }),
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
-      axios.post('/blips', values).then((res) => {
+      axios.post('/blips', values, config).then((res) => {
         console.log(res);
       }).catch((error) => {
         console.log(error);

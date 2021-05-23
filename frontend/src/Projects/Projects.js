@@ -6,9 +6,17 @@ import Navbar from "../components/Navbar/Navbar";
 import Aux from "../auxilliary/Auxilliary";
 
 const Projects = (props) => {
-
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  let config;
+  if(currentUser) {
+    config = {
+    headers: {
+      'x-access-token': currentUser.accessToken
+    }
+  }
+  } 
 
   useEffect(() => {
     axios
@@ -26,7 +34,7 @@ const Projects = (props) => {
   const removeProject = (projectRemoved) => {
     console.log(projectRemoved.description);
     axios
-      .delete("/projects/" + projectRemoved._id)
+      .delete("/projects/" + projectRemoved._id, config)
       .then((deleted) => {
         console.log(deleted.data);
         console.log(deleted);
@@ -46,7 +54,7 @@ const Projects = (props) => {
         console.log(error);
         setError(true);
       });
-  }
+  };
 
   // const postSelectedHandler = (_id) => {
   //   props.history.push({ pathname: "/projects/view/" + _id });
@@ -56,31 +64,33 @@ const Projects = (props) => {
     props.history.push({ pathname: "/projects/new" });
   };
 
-    let Projects = <p style={{ textAlign: "center" }}>Something went wrong</p>;
+  let Projects = <p style={{ textAlign: "center" }}>Something went wrong</p>;
 
-    if (!error) {
-      Projects = projects.map((project, index) => {
-        return (
-          <div className="project" key={index}>
-            <Project
-              onRemoveProject={removeProject}
-              _id={project._id}
-              name={project.name}
-              description={project.description}
-              project={project}
-              blips={project.blips}
-            />{" "}
-          </div>
-        );
-      });
-    }
-    return (
-      <Aux>
-        <Navbar clicked={() => addSelectedHandler()} title="Add project"/>
-        <div className="container">{Projects}</div>
-      </Aux>
-    );
+  if (!error) {
+    Projects = projects.map((project, index) => {
+      return (
+        <div className="project" key={index}>
+          <Project
+            onRemoveProject={removeProject}
+            _id={project._id}
+            name={project.name}
+            description={project.description}
+            project={project}
+            blips={project.blips}
+          />{" "}
+        </div>
+      );
+    });
   }
+  return (
+    <Aux>
+      {currentUser ? (
+        <Navbar clicked={() => addSelectedHandler()} title="Add project" />
+      ) : null}
 
+      <div className="container">{Projects}</div>
+    </Aux>
+  );
+};
 
 export default Projects;
