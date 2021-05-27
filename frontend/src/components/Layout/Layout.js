@@ -66,13 +66,15 @@ export default function Layout({ ...rest }) {
         .post("/auth/token/" + currentUser.accessToken, currentUser.accessToken)
         .then((response) => {
           console.log(response);
-          if (response.status === 403) {
-            localStorage.removeItem("user");
-            window.location.reload();
-          }
+          // if (response.status === 403) {
+          //   localStorage.removeItem("user");
+          //   window.location.reload();
+          // }
         })
         .catch((error) => {
           console.log(error);
+          localStorage.removeItem("user");
+          window.location.reload();
         });
     }
   }, []);

@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import axios from "../../axios/axios";
+import Modal from "@material-ui/core/Modal";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -17,11 +18,38 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: "5%",
   },
+  paper: {
+    position: "absolute",
+    width: "30%",
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    color: "black",
+  },
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonsContainer: {
+    display: "flex",
+    justifyContent: "space-evenly",
+  },
 }));
 
 const Login = (props) => {
   const classes = useStyles();
   let showHidePassword = false;
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -49,9 +77,22 @@ const Login = (props) => {
         })
         .catch((error) => {
           console.log(error);
+          setOpen(true);
         });
     },
   });
+
+  const messageP = Math.random();
+  let message;
+
+  if (messageP < 0.2) {
+    message = (
+      <h3>
+        OH... OH... Monkey could not do log in! Monkey not find user or secret
+        banana code!
+      </h3>
+    );
+  }
 
   return (
     <>
@@ -105,6 +146,35 @@ const Login = (props) => {
           </Button>
         </form>
       </Container>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        className={classes.modal}
+      >
+        <div className={classes.paper}>
+          {message ? (
+            message
+          ) : (
+            <div>
+              {" "}
+              <h3>Error</h3>
+              <h4>Incorrect username or password</h4>
+              <h4>
+                Either no user with the given username could be found, or the
+                password you gave was wrong. Please check the username and try
+                again.
+              </h4>
+            </div>
+          )}
+          <div className={classes.buttonsContainer}>
+            <Button onClick={handleClose} variant="outlined" color="secondary">
+              OK
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

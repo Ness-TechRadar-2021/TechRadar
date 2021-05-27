@@ -4,7 +4,6 @@ import "./Blips.css";
 import axios from "../axios/axios";
 import Navbar from "../components/Navbar/Navbar";
 import Aux from "../auxilliary/Auxilliary";
-import { Redirect } from "react-router-dom";
 
 const Blips = (props) => {
 
@@ -24,7 +23,7 @@ const Blips = (props) => {
     axios
       .get("/blips")
       .then((response) => {
-        const blips = response.data;
+        // const blips = response.data;
         setBlips(response.data);
       })
       .catch((error) => {
@@ -56,9 +55,9 @@ const Blips = (props) => {
       });
   };
 
-  const postSelectedHandler = (_id) => {
-    props.history.push({ pathname: "/blips/view/" + _id });
-  };
+  // const postSelectedHandler = (_id) => {
+  //   props.history.push({ pathname: "/blips/view/" + _id });
+  // };
 
   const addSelectedHandler = (_id) => {
     props.history.push({ pathname: "/blips/new" });
