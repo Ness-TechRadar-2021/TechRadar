@@ -1,13 +1,11 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { ItemWrapper } from "./Item.style";
 import { ThemeContext } from "../theme-context";
 import PropTypes from "prop-types";
-import axios from "../../axios/axios";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { NavLink } from "react-router-dom";
-import Button from "@material-ui/core/Button";
 
 const MAX_LENGTH = 3;
 
@@ -29,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Item(props) {
   const classes = useStyles();
-  const [projects, setProjects] = useState([]);
-  const [error, setError] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handlePopoverClose = () => {
@@ -39,23 +35,11 @@ function Item(props) {
 
   const open = Boolean(anchorEl);
 
-  useEffect(() => {
-    axios
-      .get("/projects")
-      .then((response) => {
-        setProjects(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true);
-      });
-  }, []);
-
   let nrProjects = 0;
 
-  if (!error) {
-    projects.map((project) => {
-      if (project.blips.find((blip) => props.data.id == blip) !== undefined) {
+  if (props.projects) {
+    props.projects.map((project) => {
+      if (project.blips.find((blip) => props.data.id === blip) !== undefined) {
         nrProjects = nrProjects + 1;
       }
     });
@@ -63,9 +47,9 @@ function Item(props) {
 
   let list = [];
 
-  if (!error) {
-    projects.map((project) => {
-      if (project.blips.find((blip) => props.data.id == blip) !== undefined) {
+  if (props.projects) {
+    props.projects.map((project) => {
+      if (project.blips.find((blip) => props.data.id === blip) !== undefined) {
         list.push(project.name);
       }
     });

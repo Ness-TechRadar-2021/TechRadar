@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start-dev": "DEBUG=backend:* NODE_ENV=development npx nodemon ./bin/www.mjs",
+    "start-dev": "npx nodemon ./bin/www.mjs",
     "start-prod": "NODE_ENV=production node ./bin/www.mjs",
     "lint": "npx eslint -c './.eslintrc.json' './**/*.mjs'",
     "fix": "npx eslint -c './.eslintrc.json' './**/*.mjs' --fix"
